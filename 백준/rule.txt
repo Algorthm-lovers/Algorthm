@@ -1,0 +1,11 @@
+Baekjoon Online Algorithm
+
+One Day One Commit, at least
+
+-form-
+<Main_BOJ_numbers_subject.java>
+
+commit message _ include rank, using memory, time taken and update content
+
+-2021.02.23
+-SeYeonCho
