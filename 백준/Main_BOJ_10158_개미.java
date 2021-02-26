@@ -1,13 +1,11 @@
 package BOJ_10158_개미;
-
-// 첫번째 방법 : 시간초과
-
+// 사이클을 구해 나눠주는 방식을 써보았지만 여전히 시간초과
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main_BOJ_10158_개미 {
-	static int w, h, p, q, t;
+	static int w, h, p, q, t, loop;
 	static int x, y, dx = 1, dy = 1;
 
 	public static void main(String[] args) throws Exception {
@@ -28,7 +26,13 @@ public class Main_BOJ_10158_개미 {
 			
 			x += dx;
 			y += dy;
+			
+			if(i!=0 && p == x && q ==y) {
+				t %= i;
+				break;
+			}
 		}
+
 		StringBuilder sb = new StringBuilder();
 		sb.append(x).append(" ").append(y);
 		System.out.println(sb);
