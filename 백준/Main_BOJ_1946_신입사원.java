@@ -1,12 +1,12 @@
 package BOJ_1946_신입사원;
-// 시간초과
+// 2중 for문에서 for문 중첩을 한번만 돌도록 바꾸어 주었지만 여전히 시간초과
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-public class Main_BOJ_1946_신입사원 {
+public class Main_BOJ_1946_신입사원2 {
 	static class order implements Comparable<order>{
 		int order1, order2;
 		
@@ -40,14 +40,10 @@ public class Main_BOJ_1946_신입사원 {
 			}
 			Collections.sort(list); // 1차 서류심사(석차1)에 대한 내림차순으로 정렬
 			
-			for(int i = list.size()-1; i >=0; i--) {
-				int curOrder2 = list.get(i).order2;
-				for(int j = i; j >= 0 ; j--) {
-					if(list.get(j).order2 > curOrder2) {
-						list.remove(j);	// 석차2가 현재 석차2보다 더 크면 리스트에서 삭제
-						i--;	// i 앞의 요소가 1줄었으므로 i도 1 줄여줌 
-					}
-				}
+			int min = list.get(list.size()-1).order2;
+			for(int i = list.size()-1; i >= 0; i--) {
+				if(min < list.get(i).order2) list.remove(i);
+				else min = list.get(i).order2;
 			}
 			
 			System.out.println(list.size());
