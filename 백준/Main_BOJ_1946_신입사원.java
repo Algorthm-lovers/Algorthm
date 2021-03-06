@@ -1,12 +1,16 @@
 package BOJ_1946_신입사원;
-// 리스트에서의 삭제연산이 시간복잡도를 크게 한다고 판단하여 삭제연산 대신 count 적용했지만 시간초과
+// ver3에서 LinkedList를 사용하였는데, LinkedList의 특성상 get(i)를 할 때 처음 노드부터 타고들어가야한다는 약점 존재
+// input의 개수가 10만개일 때 시간복잡도가 O(n)으로 보이더라도, get연산을 모두 한번씩 수행한다면 (1+n)*(n/2)의 시간복잡도를 가지게 되어 O(n^2)의 시간복잡도를 가지게 된다
+// 보통 10억개의 연산을 하는데에 1초가 소요된다고 어림잡으면 10만*10만 = 100억이므로 최악의 경우 10초 이상이 소요될 수 있음
+// LinkedList를 ArrayList로 바꾸어 시간복잡도를 줄였다
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.StringTokenizer;
 
-public class Main_BOJ_1946_신입사원3 {
+public class Main_BOJ_1946_신입사원4 {
 	static class order implements Comparable<order>{
 		int order1, order2;
 		
@@ -25,11 +29,11 @@ public class Main_BOJ_1946_신입사원3 {
 	static int T, N;
 	static int order[];
 	static StringTokenizer st;
-	static LinkedList<order> list;
+	static List<order> list;
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		T = Integer.parseInt(br.readLine());
-		list = new LinkedList<>();
+		list = new ArrayList<>();
 		for(int tc = 1; tc <= T; tc++) {
 			list.clear();
 			
