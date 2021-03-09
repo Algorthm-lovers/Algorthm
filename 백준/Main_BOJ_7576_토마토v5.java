@@ -1,14 +1,16 @@
 package BOJ_7576_토마토;
-// 시간초과
 // bfs 사용
-// 새로 익은 토마토에 대해서만 사방탐색 수행 (새로 익은 토마토는 큐를 이용하여 관리)
+// 시간초과 해결방법 (최적화 전략)
+// 1. 새로 익은 토마토에 대해서만 사방탐색 수행 (새로 익은 토마토는 큐를 이용하여 관리)
+// 2. 큐를 사용하여 새로 익은 토마토에 대해서만 사방탐색을 수행하므로 루프를 돌 때 마다 farmCopy와 farm을 동기화시킬 필요가 없음
+// 3. farmCopy를 사용할 필요가 없음
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Main_BOJ_7576_토마토v3 {
+public class Main_BOJ_7576_토마토v5 {
 	static int M, N;
 	static int[][] farm;
 	static boolean[][] isVisited;
@@ -19,7 +21,6 @@ public class Main_BOJ_7576_토마토v3 {
 		N = Integer.parseInt(st.nextToken());
 		
 		farm = new int[N][M];
-		farmCopy = new int[N][M];
 		isVisited = new boolean[N][M];
 		queue = new LinkedList<>();
 		
@@ -27,7 +28,6 @@ public class Main_BOJ_7576_토마토v3 {
 			st = new StringTokenizer(br.readLine());
 			for(int j = 0; j < M; j++) {
 				farm[i][j] = Integer.parseInt(st.nextToken());
-				farmCopy[i][j] = farm[i][j];
 				if(farm[i][j]==0) cnt++;
 				if(farm[i][j]==1) queue.offer(new int[] {i, j});
 				
@@ -39,7 +39,6 @@ public class Main_BOJ_7576_토마토v3 {
 	}
 	static int[] dr = {-1, 1, 0, 0};
 	static int[] dc = {0, 0, -1, 1};
-	static int[][] farmCopy;
 	static int day;
 	static int cnt;
 	static Queue<int[]> queue;
@@ -49,11 +48,6 @@ public class Main_BOJ_7576_토마토v3 {
 		
 		if(day!=0 && queue.isEmpty()) return false; // 이전 단계에서 새로 익은 토마토가 없고, 모든 토마토가 익은 것이 아니라면 false 반환
 		
-		for(int r = 0; r < N; r++) {
-			for(int c = 0; c < M; c++) {
-				farm[r][c] = farmCopy[r][c];
-			}
-		}
 		
 		int size = queue.size();
 		for(int k = 0; k < size; k++){
@@ -64,8 +58,8 @@ public class Main_BOJ_7576_토마토v3 {
 					int nr = r + dr[i];
 					int nc = c + dc[i];
 					
-					if(nr >= N || nr < 0 || nc >= M || nc < 0 || farm[nr][nc]!=0 || farmCopy[nr][nc]==1) continue;	// 같은 부분 중복체크 발생하는 것을 확인하고 farmCopy 조건 추가해주었다
-					farmCopy[nr][nc] = 1;
+					if(nr >= N || nr < 0 || nc >= M || nc < 0 || farm[nr][nc]!=0) continue;	// 같은 부분 중복체크 발생하는 것을 확인하고 farmCopy 조건 추가해주었다
+					farm[nr][nc] = 1;
 					queue.offer(new int[]{nr, nc}); // 새로 익은 토마토를 큐에 저장
 					cnt--;
 				}
