@@ -1,11 +1,12 @@
 package BOJ_7576_토마토;
-// 시간초과
 // bfs 사용
+// 시간초과
+// 1. 중복체크 최소화
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main_BOJ_7576_토마토v1 {
+public class Main_BOJ_7576_토마토v2 {
 	static int M, N;
 	static int[][] farm;
 	static boolean[][] isVisited;
@@ -24,6 +25,7 @@ public class Main_BOJ_7576_토마토v1 {
 			for(int j = 0; j < M; j++) {
 				farm[i][j] = Integer.parseInt(st.nextToken());
 				farmCopy[i][j] = farm[i][j];
+				if(farm[i][j]==0) cnt++;
 			}
 		}
 		// true가 return되면 day값을, false가 return되면 -1을 찍어주도록 한다
@@ -33,18 +35,9 @@ public class Main_BOJ_7576_토마토v1 {
 	static int[] dc = {0, 0, -1, 1};
 	static int[][] farmCopy;
 	static int day;
-	static int check;
+	static int cnt, check;
 	
-	static boolean bfs() {	
-		int cnt = 0;
-		for(int r = 0; r < N; r++) {
-			for(int c = 0; c < M; c++) {
-				if(farmCopy[r][c]==0) {
-					cnt++;
-					break;
-				}
-			}
-		}
+	static boolean bfs() {			
 		if(cnt==0) return true;	// 모든 토마토가 익었으면 true 반환
 		
 		if(day!=0 && check==0) return false; // 이전 단계에서 새로 익은 토마토가 없고, 모든 토마토가 익은 것이 아니라면 false 반환
@@ -63,9 +56,9 @@ public class Main_BOJ_7576_토마토v1 {
 						int nr = r + dr[i];
 						int nc = c + dc[i];
 						
-						if(nr >= N || nr < 0 || nc >= M || nc < 0 || farm[nr][nc]!=0) continue;
+						if(nr >= N || nr < 0 || nc >= M || nc < 0 || farm[nr][nc]!=0 || farmCopy[nr][nc]==1) continue;	// 같은 부분 중복체크 발생하는 것을 확인하고 farmCopy 조건 추가해주었다
 						farmCopy[nr][nc] = 1;
-						check++;
+						check++; cnt--;
 						// 시간초과 뜨면 이 단계에서, 새롭게 추가된 토마토의 좌표를 따로 저장하고 따로 저장된 위치에 대해서만 연산 수행한다
 					}
 					isVisited[r][c] = true;	// 이미 한 번 주변 토마토를 익혔으면 표시해둔다
